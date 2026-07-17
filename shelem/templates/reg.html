@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ثبت‌نام در شلم شمار</title>
+    <!-- Tailwind CSS cdn -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- Vazirmatn Font -->
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
+    <style>
+        body {
+            font-family: 'Vazirmatn', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col justify-center items-center p-4 select-none">
+
+    <!-- Card Container -->
+    <div class="w-full max-w-md bg-slate-800/50 border border-slate-700/60 rounded-2xl p-6 shadow-2xl backdrop-blur-sm relative overflow-hidden">
+        
+        <!-- Top decorative gradient line -->
+        <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-l from-emerald-500 to-cyan-500"></div>
+
+        <!-- Logo / Header -->
+        <div class="text-center mb-6">
+            <div class="inline-block bg-emerald-500/10 p-3 rounded-2xl border border-emerald-500/20 mb-3">
+                <span class="text-3xl">🃏</span>
+            </div>
+            <h2 class="text-xl font-black text-slate-100">ایجاد حساب کاربری</h2>
+            <p class="text-xs text-slate-400 mt-1">به جمع بازیکنان حرفه‌ای شلم خوش آمدید</p>
+        </div>
+
+        <!-- Registration Form -->
+        <form  class="space-y-4" method="post">
+            {% csrf_token %}
+            
+            <!-- Avatar Upload Section (Optional but Cool) -->
+            <div class="flex flex-col items-center justify-center border-b border-slate-700/40 pb-4 mb-2">
+                <div class="relative group cursor-pointer">
+                    <div class="w-16 h-16 rounded-full border-2 border-dashed border-slate-500 flex items-center justify-center bg-slate-900 text-slate-400 group-hover:border-emerald-500 group-hover:text-emerald-400 transition-colors">
+                        <span class="text-xl">📸</span>
+                    </div>
+                    <!-- Hidden input for file -->
+                    {{form.avatar}}
+                </div>
+                <span class="text-[11px] text-slate-400 mt-2">انتخاب تصویر پروفایل (اختیاری)</span>
+            </div>
+
+            <!-- Name Input -->
+            <div>
+                <label for="fullName" class="block text-xs font-bold text-slate-400 mb-1.5">نام :</label>
+                <div class="relative">
+                    <span class="absolute right-3 top-2.5 text-slate-500">👤</span>
+                   {{form.full_name}}
+            </div>
+
+            <!-- Phone / Email Input -->
+             <br>
+            <div>
+                <label for="username" class="block text-xs font-bold text-slate-400 mb-1.5">شماره تلفن:</label>
+                <div class="relative" dir="ltr">
+                    <span class="absolute left-3 top-2.5 text-slate-500"></span>
+                    {{form.phone_number}}
+            </div>
+            <br>
+            <div>
+                <label for="username" class="block text-xs font-bold text-slate-400 mb-1.5">کپچا:</label>
+                <div class="relative" dir="ltr">
+                    <span class="absolute left-3 top-2.5 text-slate-500"></span>
+                    {{form.captcha}}
+                    {{form.captcha.errors}}
+            </div>
+
+            <div class="pt-2">
+                <button type="submit" 
+                        class="w-full py-3 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold rounded-xl text-sm shadow-lg shadow-emerald-900/30 active:scale-[0.98] transition-all cursor-pointer text-center">
+                     ثبت‌نام و ورود
+                </button>
+            </div>
+        </form>
+
+       
+
+    </div>
+ <script>
+    // پیدا کردن المان دایره‌ی عکس و اینپوت مخفی
+    const avatarContainer = document.querySelector('.group.cursor-pointer');
+    const avatarInput = document.getElementById('avatarInput');
+
+    // وقتی کاربر روی دایره کلیک کرد، انگار روی اینپوت فایل کلیک کرده
+    avatarContainer.addEventListener('click', () => {
+        avatarInput.click();
+    });
+
+    // (اختیاری) وقتی کاربر عکس رو انتخاب کرد، عکسش رو داخل دایره نشون بده
+    avatarInput.addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                // جایگزین کردن شکلک دوربین با عکس انتخابی کاربر
+                avatarContainer.querySelector('div').innerHTML = `<img src="${event.target.result}" class="w-full h-full rounded-full object-cover">;`
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+  </script>
+</body>
+
+</html>

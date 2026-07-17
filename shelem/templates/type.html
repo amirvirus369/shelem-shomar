@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>انتخاب حالت بازی شلم</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
+    <style>
+        body { font-family: 'Vazirmatn', sans-serif; }
+    </style>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col justify-center items-center p-4 select-none">
+
+    <div class="w-full max-w-md bg-slate-800/50 border border-slate-700/60 rounded-3xl p-6 shadow-2xl backdrop-blur-sm relative overflow-hidden">
+        
+        <div class="text-center mb-8">
+            <div class="inline-block bg-emerald-500/10 p-3 rounded-2xl border border-emerald-500/20 mb-3">
+                <span class="text-3xl">⚔️</span>
+            </div>
+            <h2 class="text-xl font-black text-slate-100">تنظیمات نوع بازی</h2>
+            <p class="text-xs text-slate-400 mt-1">حالت برگزاری مسابقه شلم را انتخاب کنید</p>
+        </div>
+
+        <form method="POST"  class="space-y-6">
+            {% csrf_token %}
+            
+            <div class="grid grid-cols-1 gap-4">
+                
+                <label class="relative block bg-slate-900/60 border-2 border-slate-700/50 rounded-2xl p-4 cursor-pointer hover:border-slate-600 has-[:checked]:border-emerald-500 has-[:checked]:bg-emerald-500/5 transition-all group">
+                    <input type="radio" name="game_mode" value="without_joker" class="hidden" checked>
+                    
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 bg-slate-800 border border-slate-700 rounded-xl flex items-center justify-center text-2xl group-has-[:checked]:bg-emerald-500/20 group-has-[:checked]:border-emerald-500/40 transition-colors">
+                            🃏
+                        </div>
+                        <div>
+                            <h3 class="text-sm font-bold text-slate-200 group-has-[:checked]:text-emerald-400 transition-colors">شلم بدون جوکر</h3>
+                            <p class="text-[11px] text-slate-400 mt-0.5">بازی استاندارد با ۵۲ کارت اصلی (سقف ۱۶۵)</p>
+                        </div>
+                    </div>
+                    <span class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 rounded-full border-2 border-slate-600 bg-slate-900 group-has-[:checked]:border-emerald-500 group-has-[:checked]:bg-emerald-500 flex items-center justify-center text-[10px] text-slate-950 font-bold transition-all">✓</span>
+                </label>
+
+                <label class="relative block bg-slate-900/60 border-2 border-slate-700/50 rounded-2xl p-4 cursor-pointer hover:border-slate-600 has-[:checked]:border-emerald-500 has-[:checked]:bg-emerald-500/5 transition-all group">
+                    <input type="radio" name="game_mode" value="with_joker" class="hidden">
+                    
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 bg-slate-800 border border-slate-700 rounded-xl flex items-center justify-center text-2xl group-has-[:checked]:bg-emerald-500/20 group-has-[:checked]:border-emerald-500/40 transition-colors">
+                            🤡
+                        </div>
+                        <div>
+                            <h3 class="text-sm font-bold text-slate-200 group-has-[:checked]:text-emerald-400 transition-colors">شلم با جوکر</h3>
+                            <p class="text-[11px] text-slate-400 mt-0.5">بازی با ۵۴ کارت همراه با جوکر قرمز و سیاه (سقف ۲۲۰)</p>
+                        </div>
+                    </div>
+                    <span class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 rounded-full border-2 border-slate-600 bg-slate-900 group-has-[:checked]:border-emerald-500 group-has-[:checked]:bg-emerald-500 flex items-center justify-center text-[10px] text-slate-950 font-bold transition-all">✓</span>
+                </label>
+
+            </div>
+
+            <button type="submit" class="w-full py-3.5 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold rounded-xl text-sm shadow-lg shadow-emerald-900/30 active:scale-[0.98] transition-all cursor-pointer text-center">
+                تایید و ورود به میز بازی
+            </button>
+        </form>
+
+    </div>
+</body>
+</html>

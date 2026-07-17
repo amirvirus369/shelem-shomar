@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تاریخچه بازی‌های شلم</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
+    <style>
+        body { font-family: 'Vazirmatn', sans-serif; color: ;}
+        
+    </style>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col pb-6 select-none">
+
+    <header class="bg-slate-800/80 backdrop-blur-md border-b border-slate-700/50 sticky top-0 z-40 px-4 py-4 shadow-lg flex items-center justify-between max-w-md mx-auto w-full">
+        <div class="flex items-center gap-2">
+            <span class="text-xl">📜</span>
+            <h1 class="text-md font-black text-slate-100">تاریخچه بازی‌های اخیر</h1>
+        </div>
+        <span class="text-xs bg-slate-900 border border-slate-700 px-2.5 py-1 rounded-full text-slate-400">{{main.all.count}} بازی ثبت شده</span>
+    </header>
+
+    
+        <main class="flex-1 p-4 max-w-md mx-auto w-full space-y-4">
+        {% for i in main %}
+        <a href="{% if i.joker %}{% url 'shelem_main:shelem_joker' i.id%}{% else %}{% url 'shelem_main:main_shelem_url' i.id%}{% endif %}" class="block">
+        <div class="bg-slate-800/40 border border-slate-700/60 rounded-2xl p-4 shadow-xl hover:border-emerald-500/30 transition-all relative overflow-hidden">
+            {% if i.status %}
+            <span class="absolute top-0 left-0 bg-emerald-500/10 border-b border-r border-emerald-500/30 text-emerald-400 font-bold text-[9px] px-2.5 py-1 rounded-br-xl">✓ پایان یافته</span>
+            {% else %}
+            <span class="absolute top-0 left-0 bg-amber-500/10 border-b border-r border-amber-500/30 text-amber-400 font-bold text-[9px] px-2.5 py-1 rounded-br-xl">⏳ در جریان</span>
+            {% endif %}
+            {% if i.joker %}
+            <span class="absolute top-0 right-0 bg-red-500/10 border-b border-r border-red-500/30 text-red-400 font-bold text-[9px] px-2.5 py-1 rounded-br-xl">🤡 با جوکر </span>
+            {% else %}
+            <span class="absolute top-0 right-0 bg-green-500/10 border-b border-r border-green-500/30 text-green-400 font-bold text-[9px] px-2.5 py-1 rounded-br-xl">💀بدون جوکر  </span>
+            {% endif %}
+            <a href="{% url 'shelem_main:del' i.id%}"><span class="absolute top-0 left-1/2 -translate-x-1/2 bg-magenta-500/10 border-b border-r border-magenta-500/30 text-magenta-400 font-bold text-[9px] px-2.5 py-1 rounded-b-xl">
+    حذف ❌
+</span>   </a>
+            <div class="grid grid-cols-2 gap-4 mt-2 mb-4 text-center">
+                {% if i.team_ma > i.team_ona %}
+                <div class="bg-emerald-500/5 border border-emerald-500/10 p-2.5 rounded-xl">
+                    <span class="text-[10px] text-emerald-400/80 block mb-0.5">ما</span>
+                    <span class="text-xl font-black text-emerald-400">{{i.team_ma}}</span>
+                </div>
+                {% else %}
+                <div class="bg-slate-900/50 border border-slate-700/40 p-2.5 rounded-xl">
+                    <span class="text-[10px] text-rose-400/80 block mb-0.5">ما</span>
+                    <span class="text-xl font-bold text-rose-400">{{i.team_ma}}</span>
+                </div>
+                {% endif %}
+                {% if i.team_ma < i.team_ona %}
+                <div class="bg-emerald-500/5 border border-emerald-500/10 p-2.5 rounded-xl">
+                    <span class="text-[10px] text-emerald-400/80 block mb-0.5">اونا</span>
+                    <span class="text-xl font-black text-emerald-400">{{i.team_ona}}</span>
+                </div>
+                {% else %}
+                <div class="bg-slate-900/50 border border-slate-700/40 p-2.5 rounded-xl">
+                    <span class="text-[10px] text-rose-400/80 block mb-0.5">اونا</span>
+                    <span class="text-xl font-bold text-rose-400">{{i.team_ona}}</span>
+                </div>
+                {% endif %}
+            </div>
+            <div class="flex justify-between items-center text-[11px] text-slate-400 border-t border-slate-700/30 pt-3">
+                <span class="flex items-center gap-1">📅 {{i.created}}</span>
+                <span class="flex items-center gap-1">⏱️ {{i.duration}}</span>
+                <span class="flex items-center gap-1 text-slate-300 font-medium">🃏 {{i.game_main.all.count}} دست</span>
+            </div>
+        </div>
+        </a>
+        {% endfor %}
+    
+    </main>
+    
+</body>
+</html>

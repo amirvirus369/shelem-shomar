@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>شلم شمار حرفه‌ای</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
+    <style>
+        body {
+            font-family: 'Vazirmatn', sans-serif;
+        }
+        /* Custom scrollbar for game history */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background-color: rgba(156, 163, 175, 0.3);
+            border-radius: 2px;
+            color:magenta ;
+        }
+    </style>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col select-none pb-24">
+
+    <header class="bg-slate-800/80 backdrop-blur-md border-b border-slate-700/50 sticky top-0 z-40 px-4 py-3 flex justify-between items-center shadow-lg">
+        <div class="flex items-center gap-3">
+            <div class="relative">
+                <img class="w-10 h-10 rounded-full border-2 border-emerald-500 object-cover" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=256&auto=format&fit=crop" alt="User Avatar">
+                <span class="bottom-0 left-7 absolute w-3.5 h-3.5 bg-emerald-500 border-2 border-slate-800 rounded-full"></span>
+            </div>
+            <div>
+                <h4 class="text-sm font-bold text-slate-200">{{request.user.full_name}}</h4>
+                <p class="text-xs text-slate-400">میز شماره {{main.id}}</p>
+            </div>
+        </div>
+
+        <div class="flex items-center gap-2">
+            <span class="text-xl font-black bg-gradient-to-l from-emerald-400 to-cyan-400 bg-clip-text text-transparent">شلم بدون جوکر</span>
+            <div class="bg-emerald-500/10 p-1.5 rounded-lg border border-emerald-500/20">
+                🃏
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-1 p-4 max-w-md mx-auto w-full flex flex-col gap-4">
+        
+        <div class="grid grid-cols-2 gap-3">
+            <div class="bg-gradient-to-br from-indigo-600 to-blue-700 p-4 rounded-2xl shadow-md border border-indigo-500/30 text-center">
+                <span class="text-xs text-indigo-200/80 block mb-1">امتیاز کل ما</span>
+                <span class="text-3xl font-black tracking-wider">          
+                {{main.team_ma}}
+                </span>
+            </div>
+            <div class="bg-gradient-to-br from-rose-600 to-red-700 p-4 rounded-2xl shadow-md border border-rose-500/30 text-center">
+                <span class="text-xs text-rose-200/80 block mb-1">امتیاز کل اونا</span>
+                <span class="text-3xl font-black tracking-wider">
+                {{main.team_ona}}
+                </span>
+            </div>
+        </div>
+
+        <div class="bg-slate-800/50 border border-slate-700/60 rounded-2xl overflow-hidden flex flex-col flex-1 shadow-2xl backdrop-blur-sm">
+            
+            <div class="grid grid-cols-5 border-b border-slate-700 bg-slate-800/80 text-center font-bold text-sm text-slate-300 py-3">
+                <div class="col-span-2 text-indigo-400 border-l border-slate-700/50">ما</div>
+                <div class="col-span-1 text-amber-400 border-l border-slate-700/50">تعهد</div>
+                <div class="col-span-2 text-rose-400">اونا</div>
+            </div>
+            
+            <div class="grid grid-cols-5 border-b border-slate-700/40 bg-slate-800/30 text-center text-xs text-slate-400 py-2 font-medium">
+                <div class="border-l border-slate-700/30">دست</div>
+                <div class="border-l border-slate-700/50 text-indigo-300/80">کل</div>
+                <div class="border-l border-slate-700/50">تعهد</div>
+                <div class="border-l border-slate-700/30 text-rose-300/80">کل</div>
+                <div>دست</div>
+            </div>
+
+            <div class="divide-y divide-slate-700/30 overflow-y-auto custom-scrollbar flex-1 max-h-[50vh]">
+                {% for i in main.game_main.all %}
+                
+                <div class="grid grid-cols-5 text-center py-3 text-sm font-semibold hover:bg-slate-700/20 transition-colors">
+                    <div class="text-indigo-400 border-l border-slate-700/50">{{i.emtiaz_ma}} </div>
+                    <div class="text-slate-300 border-l border-slate-700/30">{{i.team_ma}}</div>
+                    
+
+                    <div class="text-amber-400 font-bold border-l border-slate-700/50 bg-amber-500/5"  style="color:{% if i.color == 2 %}red{% elif i.color == 3 %}green{% elif i.color == 5 %}magenta{% else %}yellow{% endif %};"><span>{% if i.buyer == 0  %}👉{% elif i.buyer == 1 %}👈{% else %}🖋️{% endif %}</span>{% if i.yasa %}یاسا{% endif %} {% if i.edit %}ویرایش{% endif %}{% if i.sh %}شلم{% endif %}{% if not i.edit %}{{i.emtiaz_dast}}{% endif %}</div>
+                    <div class="text-rose-400 border-l border-slate-700/30" >{{i.team_ona}}</div>
+                    <div class="text-slate-500">{{i.emtiaz_ona}}</div>
+                </div>
+                {% endfor %}
+
+            </div>
+
+            <div class="bg-slate-800/80 p-3 text-center border-t border-slate-700 text-xs text-slate-400 flex justify-between items-center px-5">
+                <span>دست‌های بازی شده: <strong class="text-slate-200">{{main.game_main.all.count}}</strong></span>
+                <span>اختلاف امتیاز: <strong class="text-emerald-400">{{num}}</strong></span>
+                <span> مدت زمان بازی : <strong class="text-emerald-400">{{time}}</strong></span>
+            </div>
+        </div>
+    </main>
+
+    <div class="fixed bottom-6 left-6 z-50 flex flex-col items-end gap-3">
+        
+        <div id="fabMenu" class="flex flex-col gap-2 scale-0 opacity-0 translate-y-10 origin-bottom transition-all duration-300 ease-out pointer-events-none">
+            <button class="flex items-center gap-2 bg-orange-600 hover:bg-slate-700 border border-slate-600 text-slate-200 py-2 px-4 rounded-xl shadow-xl text-sm font-medium transition-all">
+                <a href="{% url 'shelem_main:type' %}"><span> ساخت میز جدید </span></a>
+                <span class="text-base">🎮</span>
+            </button>
+
+            <button class="flex items-center gap-2 bg-cyan-800 hover:bg-slate-700 border border-slate-600 text-slate-200 py-2 px-4 rounded-xl shadow-xl text-sm font-medium transition-all">
+                <a href="{% url 'shelem_main:history' %}"><span>تاریخچه بازی ها </span></a>
+                <span class="text-base">⏱️</span>
+            </button>
+
+            <button onclick="openModal('newHandModall')" class="flex items-center gap-2 bg-yellow-800 hover:bg-slate-700 border border-slate-600 text-slate-200 py-2 px-4 rounded-xl shadow-xl text-sm font-medium transition-all">
+                <span>ویرایش امتیازها</span>
+                <span class="text-base">✏️</span>
+            </button>
+            {% if main.team_ma and main.team_ona != 0 %}
+            <button  class="flex items-center gap-2 bg-rose-950/80 hover:bg-rose-900 border border-rose-800 text-rose-200 py-2 px-4 rounded-xl shadow-xl text-sm font-medium transition-all">
+                <a href="{% url 'shelem_main:delete' main.id %}"><span>حذف دست آخر</span></a>
+                <span class="text-base">🗑️</span>
+            </button>
+            {% endif %}
+            
+            <button onclick="openModal('newHandModal')" class="flex items-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white py-2.5 px-4 rounded-xl shadow-xl text-sm font-bold transition-all">
+                <span>ثبت دست جدید</span>
+                <span class="text-base">➕</span>
+            </button>
+        </div>
+
+        <button id="fabBtn" onclick="toggleFab()" class="w-14 h-14 bg-gradient-to-tr from-emerald-500 to-teal-600 rounded-full flex items-center justify-center shadow-2xl text-white text-2xl focus:outline-none hover:scale-105 active:scale-95 transition-all duration-200 cursor-pointer">
+            <span id="fabIcon" class="transition-transform duration-300">⚡</span>
+        </button>
+    </div>
+
+   <div id="newHandModal" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4 hidden opacity-0 transition-opacity duration-300">
+    <div class="bg-slate-800 border border-slate-700 w-full max-w-sm rounded-2xl shadow-2xl p-5 transform scale-95 transition-transform duration-300">
+        
+        <div class="flex justify-between items-center mb-5 border-b border-slate-700 pb-3">
+            <h3 class="text-md font-bold text-slate-100 flex items-center gap-2">
+                <span>🃏</span> ثبت اطلاعات دست جدید
+            </h3>
+            <button onclick="closeModal('newHandModal')" class="text-slate-400 hover:text-slate-200 text-lg">✕</button>
+        </div>
+
+        <form  class="space-y-4" method="post">
+            {% csrf_token %}
+            <div>
+                <label class="block text-xs font-bold text-slate-400 mb-2">کدوم تیم دست رو خرید ؟</label>
+                <div class="grid grid-cols-2 gap-2">
+                    <label class="flex items-center justify-center py-2.5 px-3 bg-slate-700/50 rounded-xl cursor-pointer border border-transparent has-[:checked]:border-indigo-500 has-[:checked]:bg-indigo-600/20 text-sm font-semibold transition-all">
+                        <input type="radio" name="team" value="us" class="hidden" required>
+                        تیم ما
+                    </label>
+                    <label class="flex items-center justify-center py-2.5 px-3 bg-slate-700/50 rounded-xl cursor-pointer border border-transparent has-[:checked]:border-rose-500 has-[:checked]:bg-rose-600/20 text-sm font-semibold transition-all">
+                        <input type="radio" name="team" value="them" class="hidden" required>
+                        تیم اونا
+                    </label>
+                </div>
+            </div>
+
+            <div id="bidInputWrapper" class="transition-all duration-300 max-h-24 opacity-100 overflow-hidden">
+                <label for="bidValue" class="block text-xs font-bold text-slate-400 mb-1.5"> مقدار خریداری شده :</label>
+                <input type="number" id="bidValue" name="bidValue" placeholder="5-65" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2.5 text-center font-bold text-slate-100 focus:outline-none focus:border-emerald-500 transition-colors" required>
+            </div>
+
+            <div>
+                <label for="scoreValue" class="block text-xs font-bold text-slate-400 mb-1.5"> امتیاز گرفته شده در این دست  :</label>
+                <input type="number" id="scoreValue" name="scoreValue" placeholder="0-165" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2.5 text-center font-bold text-slate-100 focus:outline-none focus:border-emerald-500 transition-colors" required>
+            </div>
+
+            <div class="space-y-2 pt-2">
+                <button type="button" id="shelemBtn" onclick="toggleShelem()" class="w-full py-2.5 bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 text-slate-950 font-black rounded-xl text-xs shadow-md active:scale-98 transition-all cursor-pointer">
+                    🔥 اعلام وضعیت شلم
+                </button>
+
+                <div class="grid grid-cols-2 gap-2">
+                    <button type="button" onclick="closeModal('newHandModal')" class="w-full py-2.5 bg-slate-700 hover:bg-slate-600 text-slate-300 rounded-xl text-xs font-semibold transition-all">
+                        انصراف
+                    </button>
+                    <button type="submit" class="w-full py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-bold shadow-lg transition-all">
+                        تایید و ثبت دست
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+   <div id="newHandModall" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4 hidden opacity-0 transition-opacity duration-300">
+    <div class="bg-slate-800 border border-slate-700 w-full max-w-sm rounded-2xl shadow-2xl p-5 transform scale-95 transition-transform duration-300">
+        
+        <div class="flex justify-between items-center mb-5 border-b border-slate-700 pb-3">
+            <h3 class="text-md font-bold text-slate-100 flex items-center gap-2">
+                <span>🃏</span>  ویرایش امتیاز ها 
+            </h3>
+            <button onclick="closeModal('newHandModall')" class="text-slate-400 hover:text-slate-200 text-lg">✕</button>
+        </div>
+
+        <form  class="space-y-4" method="post" action="{% url 'shelem_main:edit' main.id%}">
+            {% csrf_token %}
+
+            <div id="bidInputWrapper" class="transition-all duration-300 max-h-24 opacity-100 overflow-hidden">
+                <label for="bidValue" class="block text-xs font-bold text-slate-400 mb-1.5"> امتیاز ما  :</label>
+                <input type="number"  id="bidValuee" name="bidValue" placeholder="{{main.team_ma}}" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2.5 text-center font-bold text-slate-100 focus:outline-none focus:border-emerald-500 transition-colors">
+            </div>
+
+            <div>
+                <label for="scoreValue" class="block text-xs font-bold text-slate-400 mb-1.5"> امتیاز اونا  :</label>
+                <input type="number"  id="scoreValuee" name="scoreValue" placeholder="{{main.team_ona}}" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2.5 text-center font-bold text-slate-100 focus:outline-none focus:border-emerald-500 transition-colors">
+            </div>
+
+            <div class="space-y-2 pt-2">
+
+                <div class="grid grid-cols-2 gap-2">
+                    <button type="button" onclick="closeModal('newHandModall')" class="w-full py-2.5 bg-slate-700 hover:bg-slate-600 text-slate-300 rounded-xl text-xs font-semibold transition-all">
+                        انصراف
+                    </button>
+                    <button type="submit" class="w-full py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-bold shadow-lg transition-all">
+                        تایید و ویرایش
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+    <script>
+        document.getElementById("bidValue").addEventListener("input", function () {
+    if (this.value !== "" && this.value % 5 !== 0) {
+        this.setCustomValidity("فقط مضرب ۵ مجاز است.");
+    } else {
+        this.setCustomValidity("");
+    }
+});
+  document.getElementById("scoreValue").addEventListener("input", function () {
+    if (this.value !== "" && this.value % 5 !== 0) {
+        this.setCustomValidity("فقط مضرب ۵ مجاز است.");
+    } else {
+        this.setCustomValidity("");
+    }
+});
+
+  document.getElementById("bidValuee").addEventListener("input", function () {
+    if (this.value !== "" && this.value % 5 !== 0) {
+        this.setCustomValidity("فقط مضرب ۵ مجاز است.");
+    } else {
+        this.setCustomValidity("");
+    }
+});
+  document.getElementById("scoreValuee").addEventListener("input", function () {
+    if (this.value !== "" && this.value % 5 !== 0) {
+        this.setCustomValidity("فقط مضرب ۵ مجاز است.");
+    } else {
+        this.setCustomValidity("");
+    }
+});
+        const fabMenu = document.getElementById('fabMenu');
+        const fabBtn = document.getElementById('fabBtn');
+        const fabIcon = document.getElementById('fabIcon');
+
+        // Toggle FAB Button Menu
+        function toggleFab() {
+            const isOpen = !fabMenu.classList.contains('scale-0');
+            if (isOpen) {
+                // Close menu
+                fabMenu.classList.add('scale-0', 'opacity-0', 'translate-y-10', 'pointer-events-none');
+                fabIcon.style.transform = 'rotate(0deg)';
+                fabIcon.innerText = '⚡';
+            } else {
+                // Open menu
+                fabMenu.classList.remove('scale-0', 'opacity-0', 'translate-y-10', 'pointer-events-none');
+                fabIcon.style.transform = 'rotate(135deg)';
+                fabIcon.innerText = '✕';
+            }
+        }
+        function openModal(id) {
+    const modal = document.getElementById(id);
+    const content = modal.querySelector('div');
+
+    modal.classList.remove('hidden');
+
+    setTimeout(() => {
+        modal.classList.add('opacity-100');
+        content.classList.remove('scale-95');
+        content.classList.add('scale-100');
+    }, 10);
+}
+
+function closeModal(id) {
+    const modal = document.getElementById(id);
+    const content = modal.querySelector('div');
+
+    modal.classList.remove('opacity-100');
+    content.classList.remove('scale-100');
+    content.classList.add('scale-95');
+
+    setTimeout(() => {
+        modal.classList.add('hidden');
+    }, 300);
+}
+
+
+    function toggleShelem() {
+    const wrapper = document.getElementById('bidInputWrapper');
+    const bidInput = document.getElementById('bidValue');
+    const shelemBtn = document.getElementById('shelemBtn');
+    
+    if (wrapper.classList.contains('opacity-100')) {
+        // 💥 فعال شدن وضعیت شلم
+        wrapper.classList.replace('max-h-24', 'max-h-0');
+        wrapper.classList.replace('opacity-100', 'opacity-0');
+        
+        bidInput.value = "";          // ۱. خالی کردن کامل مقدار فیلد تعهد
+        bidInput.disabled = true;     // ۲. غیرفعال و قفل کردن کامل فیلد (غیرقابل پر شدن)
+        bidInput.required = false;    // ۳. برداشتن شرط اجباری بودن برای ارسال فرم
+        
+        shelemBtn.innerHTML = "✨ لغو وضعیت شلم";
+        shelemBtn.classList.replace('from-amber-500', 'from-cyan-500');
+    } else {
+        // ↩️ بازگشت به حالت عادی
+        wrapper.classList.replace('max-h-0', 'max-h-24');
+        wrapper.classList.replace('opacity-0', 'opacity-100');
+        
+        bidInput.disabled = false;    // ۱. فعال کردن دوباره فیلد برای تایپ
+        bidInput.required = true;     // ۲. اجباری کردن مجدد فیلد
+        
+        shelemBtn.innerHTML = "🔥 اعلام وضعیت شلم (حذف/تغییر تعهد)";
+        shelemBtn.classList.replace('from-cyan-500', 'from-amber-500');
+    }
+}
+    </script>
+</body>
+</html>
+
+
